@@ -1,7 +1,7 @@
-import mongoose from "mongoose"
-const connectionString = process.env.CONNECTION_STRING
+// import mongoose from "mongoose"
+// const connectionString = process.env.CONNECTION_STRING
 
 
-mongoose.connect(connectionString, { connectTimeoutMS: 2000 })
-.then(() => console.log('Database connected'))
-.catch((err) => console.log("Could not connect to MongoDB", err));
+// mongoose.connect(connectionString, { connectTimeoutMS: 2000 })
+// .then(() => console.log('Database connected'))
+// .catch((err) => console.log("Could not connect to MongoDB", err));

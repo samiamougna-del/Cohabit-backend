@@ -1,0 +1,62 @@
+import Housing from "../models/housing.js";
+
+
+
+export const newHousing = async (req, res) => {
+    try {
+        // Create a new location
+          console.log("🔍 === DEBUG NEW HOUSING ===");
+  console.log("req.userId:", req.userId);
+  console.log("Type de req.userId:", typeof req.userId);
+  console.log("req.userId est undefined?", req.userId === undefined);
+  
+  if (!req.userId) {
+    console.log("❌ PAS DE USER ID !");
+    return res.status(400).json({ message: "User ID manquant!" });
+  }
+
+        const housing = new Housing ({
+            title: req.body.title,
+            description: req.body.description,
+            address: req.body.address,
+            userId: req.userId,
+            location: {
+                address: req.body.address, 
+                latitude: req.body.latitude,
+                longitude: req.body.longitude
+            },
+
+            surface : {
+                superficie : req.body.superficie, 
+                nbRoom: req.body.nbRoom,
+                nbBathroom: req.body.nbBathroom
+            }, 
+            price : req.body.price     
+
+
+        });
+
+ 
+        // Save location to the database
+        await housing.save();
+        res.status(201).json({ message: "Logement bien ajouté à la base de donnée ! " });
+        console.log ("data saved");
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
+
+export const deleteHousing = (req, res) => {
+  Housing.deleteOne({ _id: req.params.id })
+    .then(result => {
+      if (result.deletedCount === 0) {
+        return res.json({ result: false, error: 'Not found' });
+      }
+      res.json({ result: true, message: 'Deleted successfully' });
+    })
+    .catch(error => {
+      res.json({ result: false, error: error.message });
+    });
+};

@@ -5,6 +5,7 @@ import cors from "cors";
 import db from "./models/index.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/users.js";
+import housingRoutes from "./routes/housings.js"
 
  
 const app = express();
@@ -17,7 +18,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
- 
+app.use("/", housingRoutes)
+app.use("/", authRoutes)
 // Simple route for testing
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to the Node.js JWT Authentication application." });
@@ -46,7 +48,7 @@ db.mongoose
         process.exit();
     });
  
-// Initial function to populate roles
+// Verifie et crée automatiquement les rôles au démarrage du serveur, une fois. 
 function initial() {
     db.Role.estimatedDocumentCount()
         .then((count) => {

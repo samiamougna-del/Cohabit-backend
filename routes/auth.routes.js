@@ -1,6 +1,7 @@
 import express from "express";
-import { signup, signin } from "../controllers/auth.controller.js";
+import { signup, signin, deleteUser, updateUser } from "../controllers/auth.controller.js";
 import { verifySignUp } from "../middlewares/index.js";
+import { authJwt } from "../middlewares/index.js";
  
 const router = express.Router();
  
@@ -13,5 +14,9 @@ router.post(
  
 // Signin route
 router.post("/signin", signin);
+//delete user
+
+router.delete("/deleteUser/:id", authJwt.verifyToken, deleteUser);
+router.put("/updateUser/:id", [authJwt.verifyToken, verifySignUp.checkDuplicateEmail], updateUser)
  
 export default router;
