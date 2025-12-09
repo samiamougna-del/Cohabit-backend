@@ -46,6 +46,41 @@ export const newHousing = async (req, res) => {
     }
 };
 
+export const updateHousing = (req, res) => {
+  Housing.findByIdAndUpdate( 
+    req.params.id,
+    {
+      title: req.body.title,
+      description: req.body.description,
+      address: req.body.address,
+      location: {
+      address: req.body.address,
+      latitude: req.body.latitude,
+      longitude: req.body.longitude
+      },
+
+      surface : {
+      superficie : req.body.superficie,
+      nbRoom: req.body.nbRoom,
+      nbBathroom: req.body.nbBathroom
+    },
+
+    price : req.body.price
+
+
+    },
+    { new: true }  // <- les options ici, correctement fermées
+  )
+    .then(updated => {
+      if (!updated) {
+        return res.json({ result: false, error: 'Not found' });
+      }
+      res.json({ result: true, data: updated });
+    })
+    .catch(error => {
+      res.json({ result: false, error: error.message });
+    });
+};
 
 
 export const deleteHousing = (req, res) => {
