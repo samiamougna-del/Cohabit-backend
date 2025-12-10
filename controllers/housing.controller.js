@@ -47,30 +47,45 @@ export const newHousing = async (req, res) => {
 };
 
 export const updateHousing = (req, res) => {
-  Housing.findByIdAndUpdate( 
-    req.params.id,
-    {
-      title: req.body.title,
-      description: req.body.description,
-      address: req.body.address,
-      location: {
-      address: req.body.address,
-      latitude: req.body.latitude,
-      longitude: req.body.longitude
-      },
+  // Vérifie si l'appart existe 
+  Housing.findById(req.params.id)
+    .then(housing => {
+      if (!housing) {
+        return res.json({ result: false, error: 'Not found' });
+      }
+      
+      // Vérifie que c'est bien l'appart du proprio
+      if (housing.userId.toString() !== req.userId) {
+        return res.json({ result: false, error: 'Not your housing' });
+      }
 
-      surface : {
-      superficie : req.body.superficie,
-      nbRoom: req.body.nbRoom,
-      nbBathroom: req.body.nbBathroom
-    },
+      //Construit updateData avec SEULEMENT les champs envoyés
+      const allowedFields = ['title', 'description', 'address', 'price', 'pictures', 'isAvailable'];
+      const updateData = {};
+      
+      // Champs simples
+      allowedFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+          updateData[field] = req.body[field];
+        }
+      });
 
-    price : req.body.price
+      // Location (notation pointée pour objets imbriqués)
+      if (req.body.latitude !== undefined) updateData['location.latitude'] = req.body.latitude;
+      if (req.body.longitude !== undefined) updateData['location.longitude'] = req.body.longitude;
+      if (req.body.address !== undefined) updateData['location.address'] = req.body.address;
 
+      // Surface
+      if (req.body.superficie !== undefined) updateData['surface.superficie'] = req.body.superficie;
+      if (req.body.nbRoom !== undefined) updateData['surface.nbRoom'] = req.body.nbRoom;
+      if (req.body.nbBathroom !== undefined) updateData['surface.nbBathroom'] = req.body.nbBathroom;
 
-    },
-    { new: true }  // <- les options ici, correctement fermées
-  )
+      return Housing.findByIdAndUpdate(
+        req.params.id,
+        updateData,  // ✅ Seulement les champs modifiés
+        { new: true }
+      );
+    })
     .then(updated => {
       if (!updated) {
         return res.json({ result: false, error: 'Not found' });
@@ -80,6 +95,32 @@ export const updateHousing = (req, res) => {
     .catch(error => {
       res.json({ result: false, error: error.message });
     });
+};
+
+export const allHousing = (req, res) => {
+  Housing.find()
+    .then(data => {
+      res.json({ result: true, data: data });
+    })
+    .catch(error => {
+      res.json({ result: false, error: error.message });
+    });
+};
+
+
+export const myHouse = (req, res) => {
+
+  Housing.findById(req.params.id)
+    .then(data => {
+      if (!data) {
+        return res.json({ result: false, error: 'Not found' });
+      }
+      res.json({ result: true, data: data });
+    })
+    .catch(error => {
+      res.json({ result: false, error: error.message });
+    });
+
 };
 
 

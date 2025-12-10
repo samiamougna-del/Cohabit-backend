@@ -87,7 +87,7 @@ export const getFavorites = async (req, res) => {
         });
 
     } catch (err) {
-        res.status(500).json({ 
+        res.status(500).json({
             result: false, 
             message: err.message 
         });

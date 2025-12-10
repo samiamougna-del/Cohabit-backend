@@ -17,6 +17,6 @@ router.post("/signin", signin);
 //delete user
 
 router.delete("/deleteUser/:id", authJwt.verifyToken, deleteUser);
-router.put("/updateUser/:id", [authJwt.verifyToken, verifySignUp.checkDuplicateEmail], updateUser)
+router.patch("/updateUser/:id", authJwt.verifyToken, updateUser)
  
 export default router;

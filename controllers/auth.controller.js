@@ -94,20 +94,31 @@ export const deleteUser = (req, res) => {
 
 //params id 
 export const updateUser = (req, res) => {
-  User.findByIdAndUpdate( 
-    req.params.id,
-    {
-      lastName: req.body.lastName,
-      firstName: req.body.firstName,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
-      password: req.body.password,
-      age: req.body.age,
-      bio: req.body.bio,
-      preferences: req.body.preferences
-    },
-    { new: true }  // <- les options ici, correctement fermées
-  )
+  if (req.params.id !== req.userId) {
+    return res.status(403).json({ 
+      result: false, 
+      error: "You can only update your own profile!" 
+    });
+  }
+
+  // Liste des champs autorisés
+  const allowedFields = ['lastName', 'firstName', 'email', 'phoneNumber', 'age', 'bio', 'preferences'];
+  
+  const updateData = {};
+  
+  // Ajoute seulement les champs présents
+  allowedFields.forEach(field => {
+    if (req.body[field] !== undefined) {
+      updateData[field] = req.body[field];
+    }
+  });
+
+  // Gère le password séparément (hashage)
+  if (req.body.password) {
+    updateData.password = bcrypt.hashSync(req.body.password, 8);
+  }
+
+  User.findByIdAndUpdate(req.params.id, updateData, { new: true })
     .then(updated => {
       if (!updated) {
         return res.json({ result: false, error: 'Not found' });
