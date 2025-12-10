@@ -5,7 +5,8 @@ import cors from "cors";
 import db from "./models/index.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/users.js";
-import housingRoutes from "./routes/housings.js"
+import housingRoutes from "./routes/housings.js";
+import favoriteRoutes from "./routes/favorites.routes.js"
 
  
 const app = express();
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/test", userRoutes);
+app.use("/api", favoriteRoutes);
  
 // Set port and start server
 const PORT = process.env.PORT || 3000;
