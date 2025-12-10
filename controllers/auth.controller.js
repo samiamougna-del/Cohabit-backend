@@ -30,7 +30,7 @@ export const signup = async (req, res) => {
         // Save user to the database
         await user.save();
         res.status(201).json({ message: "User was registered successfully!" });
-        console.log ("date saved");
+        console.log ("data saved");
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
