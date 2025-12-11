@@ -9,8 +9,7 @@ const Role = db.Role
  
 export const signup = async (req, res) => {
     try {
-        
-        // Create a new user
+        //crée utilisateur sans role uniquement les données saisies par l'utilisateur
         const user = new User({
             lastName: req.body.lastName,
             firstName: req.body.firstName,
@@ -19,22 +18,49 @@ export const signup = async (req, res) => {
             password: bcrypt.hashSync(req.body.password, 8),
         });
     
+        // trouver le role après pour double vérification et 0 erreurs (même si techniquement l'utilisateur n'a pas d'autre choix que de choisir le rôle en prems)
         const role = await Role.findOne({ name: req.body.roles });
-
         if (!role) {
             return res.status(500).json({ message: "Role not found" });
         }
 
-// 3. Associer l'ID du rôle à l'utilisateur
-      user.roles = [role._id];
-        // Save user to the database
+        //associe l'ID du rôle à l'utilisateur
+        user.roles = [role._id];
+        
+        // sauvegarde de l'utilisateur dans bdd
         await user.save();
-        res.status(201).json({ message: "User was registered successfully!" });
-        console.log ("data saved");
+
+        // une fois save génération du token DIRECTEMENT a l'enregistrement évite à l'utilisateur de se connecter après s'être enregistré
+        //ajout du rôle dans le token DIRECTEMENT  pour réutilisation de reducer via JWTdecode puis screens
+        const token = jwt.sign({ 
+          id: user.id,
+          role: role.name }, 
+          config.secret, {
+            algorithm: "HS256",
+            expiresIn: 86400, // 24 heures 
+        });
+
+        //Plus besoin d'extraire le role 
+      
+
+        // réponse envoyée avec toutes les informations sans le authorities  
+        res.status(201).json({
+            message: "User was registered successfully!",
+            id: user._id,
+            lastName: user.lastName,
+            firstName: user.firstName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            accessToken: token,
+        });
+        
+        console.log("Data saved");
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
+
  
 export const signin = async (req, res) => {
     try {
@@ -57,26 +83,32 @@ export const signin = async (req, res) => {
             });
         }
  
-        // Generate JWT
-        const token = jwt.sign({ id: user.id }, config.secret, {
+        // Récupération du role via populate
+        const token = jwt.sign({
+           id: user.id, 
+           role: user.roles[0].name
+
+         }, config.secret, {
             algorithm: "HS256",
             expiresIn: 86400, // 24 hours
         });
- 
-        // Extract user roles
-        const authorities = user.roles.map((role) => `ROLE_${role.name.toUpperCase()}`);
+
  
         res.status(200).json({
-           id: user._id,
-           email: user.email,
-           roles: authorities,
-           accessToken: token,
+           message: "User logged in successfully!",
+            id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            accessToken: token,
             
         });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+
 
 export const deleteUser = (req, res) => {
   User.deleteOne({ _id: req.params.id })
