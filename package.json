@@ -14,9 +14,11 @@
     "debug": "~2.6.9",
     "dotenv": "^17.2.3",
     "express": "~4.16.1",
+    "express-fileupload": "^1.5.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.0",
     "morgan": "~1.9.1",
-    "uid2": "^1.0.0"
+    "uid2": "^1.0.0",
+    "uniqid": "^5.4.0"
   }
 }
