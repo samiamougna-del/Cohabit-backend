@@ -99,7 +99,7 @@ export const updateHousing = (req, res) => {
 
 export const allHousing = (req, res) => {
   Housing.find()
-    .populate('userId', 'firstName lastName age bio photo createdAt')   
+    .populate('userId', 'firstName lastName age bio photo preferences.lifestyle preferences.expectations createdAt')   
     .then(data => {
       res.json({ result: true, data: data });
     })
@@ -112,7 +112,7 @@ export const allHousing = (req, res) => {
 export const myHouse = (req, res) => {
 
   Housing.findById(req.params.id)
-    .populate('userId', 'firstName lastName age bio photo createdAt')
+    .populate('userId', 'firstName lastName age bio photo preferences.lifestyle preferences.expectations createdAt')
     .then(data => {
       if (!data) {
         return res.json({ result: false, error: 'Not found' });

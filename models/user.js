@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema(
          }, 
          
         preferences: { 
-         budgetMin: Number,
+        budgetMin: Number,
         budgetMax: Number,
         location: String,
         lifestyle: [String],
