@@ -16,6 +16,17 @@ export const signup = async (req, res) => {
             email: req.body.email,
             phoneNumber: req.body.phoneNumber,
             password: bcrypt.hashSync(req.body.password, 8),
+            age: req.body.age,
+            photo: req.body.photo,
+            bio: req.body.bio,
+            preferences: {
+                budgetMin: req.body.preferences?.budgetMin,
+                budgetMax: req.body.preferences?.budgetMax,
+                location: req.body.preferences?.location,
+                lifestyle: req.body.preferences?.lifestyle || [],
+                expectations: req.body.preferences?.expectations || []
+            }
+
         });
     
         // trouver le role après pour double vérification et 0 erreurs (même si techniquement l'utilisateur n'a pas d'autre choix que de choisir le rôle en prems)
@@ -51,6 +62,11 @@ export const signup = async (req, res) => {
             firstName: user.firstName,
             email: user.email,
             phoneNumber: user.phoneNumber,
+            accessToken: token,
+            age: user.age,
+            photo: user.photo,
+            bio: user.bio,
+            preferences: user.preferences,
             accessToken: token,
         });
         
@@ -101,6 +117,12 @@ export const signin = async (req, res) => {
             lastName: user.lastName,
             email: user.email,
             phoneNumber: user.phoneNumber,
+            accessToken: token,
+            age: user.age,
+            photo: user.photo,
+            bio: user.bio,
+            preferences: user.preferences,
+            favorites: user.favorites,
             accessToken: token,
             
         });
