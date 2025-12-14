@@ -7,6 +7,8 @@ import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/users.js";
 import housingRoutes from "./routes/housings.js";
 import favoriteRoutes from "./routes/favorites.routes.js"
+import requestRoutes from "./routes/request.routes.js"
+import uploadRoutes from "./routes/upload.routes.js"
 
  
 const app = express();
@@ -30,6 +32,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/test", userRoutes);
 app.use("/api", favoriteRoutes);
+app.use("/api", requestRoutes)
+app.use("/api", uploadRoutes)
  
 // Set port and start server
 const PORT = process.env.PORT || 3000;
