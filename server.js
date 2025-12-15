@@ -11,7 +11,6 @@ import favoriteRoutes from "./routes/favorites.routes.js"
 import requestRoutes from "./routes/request.routes.js"
 import uploadRoutes from "./routes/upload.routes.js"
 
- 
 const app = express();
 
 // Middleware configuration
