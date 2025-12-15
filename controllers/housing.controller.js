@@ -138,3 +138,17 @@ export const deleteHousing = (req, res) => {
       res.json({ result: false, error: error.message });
     });
 };
+
+export const mySeniorHousing = (req, res) => {
+  Housing.findOne({ userId: req.userId })
+    .populate('userId', 'firstName lastName age bio photo preferences.lifestyle preferences.expectations createdAt')
+    .then(data => {
+      if (!data) {
+        return res.json({ result: false, error: 'No housing found' });
+      }
+      res.json({ result: true, data: data });
+    })
+    .catch(error => {
+      res.json({ result: false, error: error.message });
+    });
+};

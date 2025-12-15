@@ -63,6 +63,7 @@ export const seniorRequests = async (req, res) => {
 
         const requests = await Request.find({ senior: seniorId })
         .populate('student', 'firstName lastName photo bio') // a adapté selon ce qu'on decide de renvoyer
+        .populate('housing', 'title location price pictures')// a adapté selon ce qu'on decide de renvoyer
         .sort({createdAt: -1}) // trié du plus récent au moins récent 
 
         res.json({ result: true, requests})

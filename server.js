@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import cors from "cors";
+import fileUpload from 'express-fileupload';
 import db from "./models/index.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/users.js";
@@ -10,7 +11,6 @@ import favoriteRoutes from "./routes/favorites.routes.js"
 import requestRoutes from "./routes/request.routes.js"
 import uploadRoutes from "./routes/upload.routes.js"
 
- 
 const app = express();
 
 // Middleware configuration
@@ -21,6 +21,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload())
 app.use("/", housingRoutes)
 app.use("/", authRoutes)
 // Simple route for testing

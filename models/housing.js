@@ -16,11 +16,11 @@ const housingSchema = new mongoose.Schema({ //place peut être pas pertinant com
     maxlength: 1000
   },
   
-  // pictures: {
-  //   type: [String],  // array pour plusieurs photos (en url, voir pour implémenter cloudify si nécéssaire )
-  //   required:true 
+  pictures: {
+  type: [String],  // array pour plusieurs photos (en url, voir pour implémenter cloudify si nécéssaire )
+  required:true 
   //     //ajouter msg photo obligatoire dans la route 
-  //   },
+  },
   
   
   location: { 
