@@ -60,11 +60,12 @@ const userSchema = new mongoose.Schema(
         location: String,
         lifestyle: [String],
         expectations: [String],
-},
-        favorites: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "housing"
-        }],
+         },
+
+         favorites: [{
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'housing',
+         }],
 
         roles: [
             {
