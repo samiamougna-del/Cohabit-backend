@@ -156,7 +156,7 @@ export const updateUser = (req, res) => {
   }
 
   // Liste des champs autorisés
-  const allowedFields = ['lastName', 'firstName', 'email', 'phoneNumber', 'age', 'bio', 'preferences'];
+  const allowedFields = ['lastName', 'firstName', 'email', 'phoneNumber', 'age', 'bio', 'preferences', 'photo'];
   
   const updateData = {};
   

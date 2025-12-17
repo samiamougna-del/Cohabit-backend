@@ -140,6 +140,21 @@ export const updateRequestStatus = async (req, res) => {
     // on updatre enfin le statut damn 
         request.status = status;
         const updatedRequest = await request.save();
+
+        if (status === 'accepted') {
+            await Request.updateMany(
+                {
+                    housing: request.housing,  // Même logement
+                    status: 'pending',          // Seulement celles qui sont pending
+                    _id: { $ne: requestId }     // Sauf celle qu'on vient d'accepter $ne = not equal 
+                },
+                {
+                    status: 'refused'           // Les passer en "refused"
+                }
+            );
+        }
+
+
         res.json({ result: true, request: updatedRequest });
 
          } catch (err) {
