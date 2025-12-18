@@ -79,7 +79,7 @@ export const studentRequests = async (req, res) =>{
     try {
         const studentId = req.userId; 
         const requests = await Request.find({student: studentId})
-        .populate('senior', 'lastName firstName photo bio email phoneNumber')// a adapté selon ce qu'on decide de renvoyer
+        .populate('senior', 'lastName firstName photo bio email phoneNumber age')// a adapté selon ce qu'on decide de renvoyer
         .populate('housing', 'title location price pictures surface')// a adapté selon ce qu'on decide de renvoyer
         .sort({createdAt: -1}) // trié du plus récent au moins récent 
 
