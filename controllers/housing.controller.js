@@ -31,7 +31,8 @@ export const newHousing = async (req, res) => {
                 nbRoom: req.body.nbRoom,
                 nbBathroom: req.body.nbBathroom
             }, 
-            price : req.body.price     
+            price : req.body.price,     
+            pictures: req.body.pictures || []
 
 
         });
