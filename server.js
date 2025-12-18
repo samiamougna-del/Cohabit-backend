@@ -10,6 +10,7 @@ import housingRoutes from "./routes/housings.js";
 import favoriteRoutes from "./routes/favorites.routes.js"
 import requestRoutes from "./routes/request.routes.js"
 import uploadRoutes from "./routes/upload.routes.js"
+import messageRoutes from "./routes/message.routes.js" // pour le cat 
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api/test", userRoutes);
 app.use("/api", favoriteRoutes);
 app.use("/api", requestRoutes)
 app.use("/api", uploadRoutes)
+app.use("/api/messages", messageRoutes) // pour le chat 
  
 // Set port and start server
 const PORT = process.env.PORT || 3000;
