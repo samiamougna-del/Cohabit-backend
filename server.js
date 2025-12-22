@@ -48,9 +48,11 @@ db.mongoose
         console.log("Successfully connected to MongoDB.");
         // Initialize roles in the database
         initial();
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}.`);
-        });
+       if (process.env.NODE_ENV !== 'production') {
+            app.listen(PORT, () => {
+                console.log(`Server is running on port ${PORT}.`);
+            });
+        }
     })
     .catch((err) => {
         console.error("Connection error:", err);
@@ -81,3 +83,4 @@ function initial() {
         });
 }
 
+export default app;
