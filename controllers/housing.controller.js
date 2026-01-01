@@ -11,7 +11,7 @@ export const newHousing = async (req, res) => {
   console.log("req.userId est undefined?", req.userId === undefined);
   
   if (!req.userId) {
-    console.log("❌ PAS DE USER ID !");
+    console.log(" PAS DE USER ID !");
     return res.status(400).json({ message: "User ID manquant!" });
   }
 
@@ -83,7 +83,7 @@ export const updateHousing = (req, res) => {
 
       return Housing.findByIdAndUpdate(
         req.params.id,
-        updateData,  // ✅ Seulement les champs modifiés
+        updateData,  //  Seulement les champs modifiés
         { new: true }
       );
     })
